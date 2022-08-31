@@ -4,6 +4,7 @@ const Dotenv = require('dotenv-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
+  mode: 'none',
   entry: './src/index.tsx',
   resolve: { extensions: ['.ts', '.tsx', '.js', '.jsx'] },
   output: {
@@ -14,7 +15,8 @@ module.exports = {
   devServer: {
     hot: true,
     open: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    port: 9000
   },
   devtool: 'source-map',
   plugins: [
