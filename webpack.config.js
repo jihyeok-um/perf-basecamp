@@ -2,9 +2,9 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
 module.exports = {
-  mode: 'none',
   entry: './src/index.tsx',
   resolve: { extensions: ['.ts', '.tsx', '.js', '.jsx'] },
   output: {
@@ -47,10 +47,28 @@ module.exports = {
         options: {
           name: 'static/[name].[ext]'
         }
+      },
+      {
+        test: /\.(png|gif)$/i,
+        type: 'asset'
       }
     ]
   },
   optimization: {
-    minimize: false
+    minimizer: [
+      '...',
+      new ImageMinimizerPlugin({
+        minimizer: {
+          implementation: ImageMinimizerPlugin.imageminMinify,
+          options: {
+            plugins: [
+              ['imagemin-gifsicle', { interlaced: true }],
+              ['imagemin-optipng', { optimizationLevel: 5 }],
+              ['imagemin-webp']
+            ]
+          }
+        }
+      })
+    ]
   }
 };
